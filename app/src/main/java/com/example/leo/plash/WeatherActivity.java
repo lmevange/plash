@@ -4,15 +4,40 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.leo.plash.Data.Channel;
+import com.example.leo.plash.service.WeatherServiceCallback;
+import com.example.leo.plash.service.Weatherundergroundservice;
 
 
-public class WeatherActivity extends ActionBarActivity {
+public class WeatherActivity extends ActionBarActivity implements WeatherServiceCallback {
+    private ImageView _weatherIcon;
+    private TextView _tvTemp;
+    private TextView _tvCond;
+    private TextView _tvLoca;
+
+    private Weatherundergroundservice _service;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
+        _weatherIcon = (ImageView) findViewById(R.id.weatherIconImageView);
+        _tvTemp = (TextView)findViewById(R.id.temperatureTextView);
+        _tvCond = (TextView)findViewById(R.id.conditionTextView);
+        _tvLoca = (TextView)findViewById(R.id.locationTextView);
+
+        _service = new Weatherundergroundservice(this);
+        _service.refreash("Buffalo,NY");
+
+
+
     }
+
 
 
     @Override
@@ -35,5 +60,16 @@ public class WeatherActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void serviceSuccess(Channel channel) {
+
+    }
+
+    @Override
+    public void serviceFailure(Exception e) {
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+
     }
 }
