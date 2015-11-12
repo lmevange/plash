@@ -3,4 +3,11 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="Tempreature" />
+    <string name="Temprature" />
+    <string name="Conditon" />
+    <string name="Location" />
+    <string name="temprature">Temprature</string>
+    <string name="conditon">Condition</string>
+    <string name="location">Location</string>
 </resources>
