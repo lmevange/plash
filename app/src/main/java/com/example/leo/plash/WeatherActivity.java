@@ -1,5 +1,6 @@
 package com.example.leo.plash;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.leo.plash.Data.Channel;
+import com.example.leo.plash.Data.CurrentObservation;
 import com.example.leo.plash.service.WeatherServiceCallback;
 import com.example.leo.plash.service.Weatherundergroundservice;
 
@@ -20,6 +21,7 @@ public class WeatherActivity extends ActionBarActivity implements WeatherService
     private TextView _tvLoca;
 
     private Weatherundergroundservice _service;
+    private ProgressDialog _pd;
 
 
     @Override
@@ -32,6 +34,11 @@ public class WeatherActivity extends ActionBarActivity implements WeatherService
         _tvLoca = (TextView)findViewById(R.id.locationTextView);
 
         _service = new Weatherundergroundservice(this);
+
+        _pd = new ProgressDialog(this);
+        _pd.setMessage("Loading...");
+        _pd.show();
+
         _service.refreash("Buffalo,NY");
 
 
@@ -62,14 +69,15 @@ public class WeatherActivity extends ActionBarActivity implements WeatherService
         return super.onOptionsItemSelected(item);
     }
 
+
     @Override
-    public void serviceSuccess(Channel channel) {
+    public void serviceSuccess(CurrentObservation channel) {
 
     }
 
     @Override
     public void serviceFailure(Exception e) {
-        Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
 
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
     }
 }
