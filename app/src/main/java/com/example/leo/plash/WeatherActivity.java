@@ -32,9 +32,16 @@ public class WeatherActivity extends ActionBarActivity implements WeatherService
 
     private ProgressDialog _pd;
 
+<<<<<<< Updated upstream
 
     static final int REQUEST_IMAGE_CAPTURE =1;
     ImageView weatherImage;
+=======
+    Button btnTakePhoto;
+    private static final int REQUEST_IMAGE_CAPTURE =1313;
+    ImageView weatherImage;
+
+>>>>>>> Stashed changes
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +59,7 @@ public class WeatherActivity extends ActionBarActivity implements WeatherService
         _pd.show();
 
         _service.refreash("Buffalo,NY");
-
+        btnTakePhoto = (Button) findViewById(R.id.weatherButton);
 
 
     }
