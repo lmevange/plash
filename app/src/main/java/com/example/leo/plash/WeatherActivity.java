@@ -25,6 +25,7 @@ import com.example.leo.plash.service.Weatherundergroundservice;
 
 
 public class WeatherActivity extends ActionBarActivity implements WeatherServiceCallback {
+
     private ImageView _weatherIcon;
     private TextView _tvTemp;
     private TextView _tvCond;
@@ -34,25 +35,20 @@ public class WeatherActivity extends ActionBarActivity implements WeatherService
 
     private ProgressDialog _pd;
 
-<<<<<<< Updated upstream
 
-    static final int REQUEST_IMAGE_CAPTURE =1;
-    ImageView weatherImage;
-=======
     Button btnTakePhoto;
-    private static final int REQUEST_IMAGE_CAPTURE =1313;
+    private static final int REQUEST_IMAGE_CAPTURE = 1313;
     ImageView weatherImage;
 
->>>>>>> Stashed changes
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
         _weatherIcon = (ImageView) findViewById(R.id.weatherIconImageView);
-        _tvTemp = (TextView)findViewById(R.id.temperatureTextView);
-        _tvCond = (TextView)findViewById(R.id.conditionTextView);
-        _tvLoca = (TextView)findViewById(R.id.locationTextView);
+        _tvTemp = (TextView) findViewById(R.id.temperatureTextView);
+        _tvCond = (TextView) findViewById(R.id.conditionTextView);
+        _tvLoca = (TextView) findViewById(R.id.locationTextView);
 
         _service = new Weatherundergroundservice(this);
 
@@ -62,39 +58,49 @@ public class WeatherActivity extends ActionBarActivity implements WeatherService
 
         _service.refreash("Buffalo,NY");
         btnTakePhoto = (Button) findViewById(R.id.weatherButton);
+        weatherImage = (ImageView) findViewById(R.id.weatherImage);
+
+       // btnTakePhoto.setOnClickListener(new btnTakePhotoClicker());
 
 
     }
 
-
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_weather, menu);
-        return true;
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
+    /*
+        class btnTakePhotoClicker implements Button.OnClickListener {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+            @Override
+            public void onClick(View v) {
+                Intent cameraintent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraintent, CA);
+            }
+    */
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+            // Inflate the menu; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.menu_weather, menu);
             return true;
         }
 
-        return super.onOptionsItemSelected(item);
-    }
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            // Handle action bar item clicks here. The action bar will
+            // automatically handle clicks on the Home/Up button, so long
+            // as you specify a parent activity in AndroidManifest.xml.
+            int id = item.getItemId();
 
+            //noinspection SimplifiableIfStatement
+            if (id == R.id.action_settings) {
+                return true;
+            }
 
-    @Override
-    public void serviceSuccess(CurrentObservation channel) {
-        _pd.hide();
+            return super.onOptionsItemSelected(item);
+        }
 
+<<<<<<< Updated upstream
         Items items = channel.get_items();
         int resource = getResources().getIdentifier("drawable/icon_" + items.get_con().get_it(), null, getPackageName());
 
@@ -104,12 +110,20 @@ public class WeatherActivity extends ActionBarActivity implements WeatherService
         _tvTemp.setText(items.get_con().get_temp()+"\u00b0"+channel.get_units().get_temp());
         _tvCond.setText(items.get_con().get_descrip());
         _tvLoca.setText(_service.getLocation());
+=======
+>>>>>>> Stashed changes
 
-    }
+        @Override
+        public void serviceSuccess(CurrentObservation channel) {
+            _pd.hide();
 
-    @Override
-    public void serviceFailure(Exception e) {
-        _pd.hide();
-        Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            int resource = 0;
+
+        }
+
+        @Override
+        public void serviceFailure(Exception e) {
+            _pd.hide();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
-}
