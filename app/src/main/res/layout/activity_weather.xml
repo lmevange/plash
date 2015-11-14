@@ -7,7 +7,7 @@
     android:background="#ffffff"
     android:backgroundTint="#ffffff"
     android:backgroundTintMode="add"
-    android:id="@+id/">
+    android:id="@+id/plash">
 
     <ImageView
         android:layout_width="wrap_content"

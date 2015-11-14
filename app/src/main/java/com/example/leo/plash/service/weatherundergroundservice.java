@@ -83,6 +83,7 @@ public class Weatherundergroundservice {
 
                     CurrentObservation currentObservation = new CurrentObservation();
                     currentObservation.JSONpopulate(queryResults.optJSONObject("features").optJSONObject("currentObservation"));
+                    _cl.serviceSuccess(currentObservation);
                 } catch (JSONException e) {
                     _cl.serviceFailure(e);
                 }

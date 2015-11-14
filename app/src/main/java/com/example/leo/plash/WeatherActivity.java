@@ -29,13 +29,12 @@ public class WeatherActivity extends ActionBarActivity implements WeatherService
     private TextView _tvLoca;
 
     private Weatherundergroundservice _service;
-<<<<<<< HEAD
+
     private ProgressDialog _pd;
 
-=======
+
     static final int REQUEST_IMAGE_CAPTURE =1;
-    ImageView weatherImage
->>>>>>> origin/master
+    ImageView weatherImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,12 +84,15 @@ public class WeatherActivity extends ActionBarActivity implements WeatherService
 
     @Override
     public void serviceSuccess(CurrentObservation channel) {
+        _pd.hide();
+
+        int resource = 0;
 
     }
 
     @Override
     public void serviceFailure(Exception e) {
-
+        _pd.hide();
         Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
     }
 }
