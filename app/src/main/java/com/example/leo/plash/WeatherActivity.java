@@ -100,25 +100,24 @@ public class WeatherActivity extends ActionBarActivity implements WeatherService
             return super.onOptionsItemSelected(item);
         }
 
-<<<<<<< Updated upstream
-        Items items = channel.get_items();
-        int resource = getResources().getIdentifier("drawable/icon_" + items.get_con().get_it(), null, getPackageName());
 
-        Drawable weatherIcon = getResources().getDrawable(resource);
 
-        _weatherIcon.setImageDrawable(weatherIcon);
-        _tvTemp.setText(items.get_con().get_temp()+"\u00b0"+channel.get_units().get_temp());
-        _tvCond.setText(items.get_con().get_descrip());
-        _tvLoca.setText(_service.getLocation());
-=======
->>>>>>> Stashed changes
+
+
+
 
         @Override
         public void serviceSuccess(CurrentObservation channel) {
             _pd.hide();
+            Items items = channel.get_items();
+            int resource = getResources().getIdentifier("drawable/icon_" + items.get_con().get_it(), null, getPackageName());
 
-            int resource = 0;
+            Drawable weatherIcon = getResources().getDrawable(resource);
 
+            _weatherIcon.setImageDrawable(weatherIcon);
+            _tvTemp.setText(items.get_con().get_temp()+"\u00b0"+channel.get_units().get_temp());
+            _tvCond.setText(items.get_con().get_descrip());
+            _tvLoca.setText(_service.getLocation());
         }
 
         @Override
