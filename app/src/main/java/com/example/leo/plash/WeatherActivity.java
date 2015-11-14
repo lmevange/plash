@@ -7,6 +7,14 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
+import android.content.pm.PackageInfo;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.leo.plash.Data.Channel;
 import com.example.leo.plash.service.WeatherServiceCallback;
@@ -20,7 +28,8 @@ public class WeatherActivity extends ActionBarActivity implements WeatherService
     private TextView _tvLoca;
 
     private Weatherundergroundservice _service;
-
+    static final int REQUEST_IMAGE_CAPTURE =1;
+    ImageView weatherImage
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
