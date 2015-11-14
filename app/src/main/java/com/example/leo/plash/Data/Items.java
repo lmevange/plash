@@ -9,6 +9,10 @@ public class Items implements JSONpopulate {
 
     private Condition _con;
 
+    public Condition get_con() {
+        return _con;
+    }
+
     @Override
     public void JSONpopulate(JSONObject Data) {
 

@@ -1,6 +1,7 @@
 package com.example.leo.plash;
 
 import android.app.ProgressDialog;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.leo.plash.Data.CurrentObservation;
+import com.example.leo.plash.Data.Items;
 import com.example.leo.plash.service.WeatherServiceCallback;
 import com.example.leo.plash.service.Weatherundergroundservice;
 
@@ -93,7 +95,15 @@ public class WeatherActivity extends ActionBarActivity implements WeatherService
     public void serviceSuccess(CurrentObservation channel) {
         _pd.hide();
 
-        int resource = 0;
+        Items items = channel.get_items();
+        int resource = getResources().getIdentifier("drawable/icon_" + items.get_con().get_it(), null, getPackageName());
+
+        Drawable weatherIcon = getResources().getDrawable(resource);
+
+        _weatherIcon.setImageDrawable(weatherIcon);
+        _tvTemp.setText(items.get_con().get_temp()+"\u00b0"+channel.get_units().get_temp());
+        _tvCond.setText(items.get_con().get_descrip());
+        _tvLoca.setText(_service.getLocation());
 
     }
 

@@ -33,11 +33,14 @@ public class Weatherundergroundservice {
         return location;
     }
 
-    public void refreash(final String location){
+    public void refreash( String loca){
+
+        this.location = loca;
+
         new AsyncTask<String, Void, String>() {
             @Override
-            protected String doInBackground(String... params) {
-                String q = String.format("select location\"@s\"",location);
+            protected String doInBackground(String... strings) {
+                String q = String.format("select location\"@s\"",strings[0]);
                 String endPoint = String.format("http://api.wunderground.com/api/3cf16a40152a4b1f/conditions/forecast/q/@s.json", Uri.encode(q));
 
                try{
