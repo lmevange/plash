@@ -1,7 +1,10 @@
 package com.example.leo.plash;
 
 import android.app.ProgressDialog;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,10 +21,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.io.IOException;
+import java.util.Date;
+import java.io.File;
 import com.example.leo.plash.Data.CurrentObservation;
 import com.example.leo.plash.Data.Items;
 import com.example.leo.plash.service.WeatherServiceCallback;
 import com.example.leo.plash.service.Weatherundergroundservice;
+
+import java.text.SimpleDateFormat;
 
 
 public class WeatherActivity extends ActionBarActivity implements WeatherServiceCallback {
@@ -35,11 +43,9 @@ public class WeatherActivity extends ActionBarActivity implements WeatherService
 
     private ProgressDialog _pd;
 
-
-    Button btnTakePhoto;
-    private static final int REQUEST_IMAGE_CAPTURE = 1313;
-    ImageView weatherImage;
-
+    private static final int ACTIVITY_START_CAMERA_APP = 0;
+    private ImageView mPhotoCapturedImageView;
+    private String mImageFileLocation = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,27 +63,12 @@ public class WeatherActivity extends ActionBarActivity implements WeatherService
         _pd.show();
 
         _service.refreash("Buffalo,NY");
-        btnTakePhoto = (Button) findViewById(R.id.weatherButton);
-        weatherImage = (ImageView) findViewById(R.id.weatherImage);
 
-       // btnTakePhoto.setOnClickListener(new btnTakePhotoClicker());
+        mPhotoCapturedImageView = (ImageView) findViewById(R.id.weatherImage);
+
+        }
 
 
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-    /*
-        class btnTakePhotoClicker implements Button.OnClickListener {
-
-            @Override
-            public void onClick(View v) {
-                Intent cameraintent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraintent, CA);
-            }
-    */
         @Override
         public boolean onCreateOptionsMenu(Menu menu) {
             // Inflate the menu; this adds items to the action bar if it is present.
@@ -125,4 +116,49 @@ public class WeatherActivity extends ActionBarActivity implements WeatherService
             _pd.hide();
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
+
+        public void takePhoto(View view){
+            Intent callCameraApplicationIntent = new Intent();
+            callCameraApplicationIntent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+
+            File photoFile = null;
+            try{
+                photoFile = createImageFileSave();
+
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+            callCameraApplicationIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+
+            startActivityForResult(callCameraApplicationIntent, ACTIVITY_START_CAMERA_APP);
+
+
+        }
+
+        protected  void onActivityResult (int requestCode, int resultCode,Intent data){
+            if(requestCode == ACTIVITY_START_CAMERA_APP && resultCode == RESULT_OK){
+                //Bundle extras = data.getExtras();
+                //Bitmap photoCapturedBitmap = (Bitmap) extras.get("data");
+                //mPhotoCapturedImageView.setImageBitmap(photoCapturedBitmap);
+                Bitmap photoCapturedBitmap = BitmapFactory.decodeFile(mImageFileLocation);
+                mPhotoCapturedImageView.setImageBitmap(photoCapturedBitmap);
+                
+            }
+
+        }
+
+    File createImageFileSave() throws IOException{
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "IMAGE_" + timeStamp + "_";
+        File storageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+
+        File image = File.createTempFile(imageFileName, ".jpg", storageDirectory);
+        mImageFileLocation = image.getAbsolutePath();
+
+        return image;
     }
+
+
+    }
+
