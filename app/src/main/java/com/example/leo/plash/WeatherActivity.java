@@ -28,11 +28,12 @@ import com.example.leo.plash.Data.CurrentObservation;
 import com.example.leo.plash.Data.Items;
 import com.example.leo.plash.service.WeatherServiceCallback;
 import com.example.leo.plash.service.Weatherundergroundservice;
+import android.app.Activity;
 
 import java.text.SimpleDateFormat;
 
 
-public class WeatherActivity extends ActionBarActivity implements WeatherServiceCallback {
+public class WeatherActivity extends Activity implements WeatherServiceCallback {
 
     private ImageView _weatherIcon;
     private TextView _tvTemp;
@@ -43,9 +44,9 @@ public class WeatherActivity extends ActionBarActivity implements WeatherService
 
     private ProgressDialog _pd;
 
-    private static final int ACTIVITY_START_CAMERA_APP = 0;
-    private ImageView mPhotoCapturedImageView;
-    private String mImageFileLocation = "";
+  //  private static final int ACTIVITY_START_CAMERA_APP = 0;
+  //  private ImageView mPhotoCapturedImageView;
+  //  private String mImageFileLocation = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,7 @@ public class WeatherActivity extends ActionBarActivity implements WeatherService
 
         _service.refreash("Buffalo,NY");
 
-        mPhotoCapturedImageView = (ImageView) findViewById(R.id.weatherImage);
+       // mPhotoCapturedImageView = (ImageView) findViewById(R.id.weatherImage);
 
         }
 
@@ -116,7 +117,7 @@ public class WeatherActivity extends ActionBarActivity implements WeatherService
             _pd.hide();
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
-
+/*
         public void takePhoto(View view){
             Intent callCameraApplicationIntent = new Intent();
             callCameraApplicationIntent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -140,9 +141,10 @@ public class WeatherActivity extends ActionBarActivity implements WeatherService
                 //Bundle extras = data.getExtras();
                 //Bitmap photoCapturedBitmap = (Bitmap) extras.get("data");
                 //mPhotoCapturedImageView.setImageBitmap(photoCapturedBitmap);
-                Bitmap photoCapturedBitmap = BitmapFactory.decodeFile(mImageFileLocation);
-                mPhotoCapturedImageView.setImageBitmap(photoCapturedBitmap);
-                
+               // Bitmap photoCapturedBitmap = BitmapFactory.decodeFile(mImageFileLocation);
+               // mPhotoCapturedImageView.setImageBitmap(photoCapturedBitmap);
+                setReducedImageSize();
+
             }
 
         }
@@ -159,6 +161,24 @@ public class WeatherActivity extends ActionBarActivity implements WeatherService
         return image;
     }
 
+    void setReducedImageSize(){
+        int targetImageViewWidth = mPhotoCapturedImageView.getWidth();
+        int targetImageViewHeight = mPhotoCapturedImageView.getHeight();
 
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(mImageFileLocation, bmOptions);
+        int cameraImageWidth = bmOptions.outWidth;
+        int cameraImageHeight = bmOptions.outHeight;
+
+        int scaleFactor = Math.min(cameraImageWidth/targetImageViewWidth, cameraImageHeight/targetImageViewHeight);
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inJustDecodeBounds = false;
+
+        Bitmap photoReducedSizeBitmap = BitmapFactory.decodeFile(mImageFileLocation, bmOptions);
+        mPhotoCapturedImageView.setImageBitmap(photoReducedSizeBitmap);
+    }
+
+*/
     }
 

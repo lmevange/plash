@@ -14,9 +14,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-/**
- * Created by Joseph on 11/12/15.
- */
+
 public class Weatherundergroundservice {
     private WeatherServiceCallback _cl;
     private String location;
@@ -40,8 +38,8 @@ public class Weatherundergroundservice {
         new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... strings) {
-                String q = String.format("select location\"@s\"",strings[0]);
-                String endPoint = String.format("http://api.wunderground.com/api/3cf16a40152a4b1f/conditions/forecast/q/@s.json", Uri.encode(q));
+                String q = String.format("select location\"%    s\"",strings[0]);
+                String endPoint = String.format("http://api.wunderground.com/api/3cf16a40152a4b1f/conditions/forecast/q/%s.json", Uri.encode(q));
 
                try{
                    URL url = new URL(endPoint);
@@ -103,3 +101,4 @@ public class Weatherundergroundservice {
         }
     }
 }
+
