@@ -5,7 +5,7 @@ import org.json.JSONObject;
 /**
  * Created by Joseph on 11/12/15.
  */
-public class CurrentObservation implements JSONpopulate {
+public class Channel implements JSONpopulate {
 
     private Units _units;
     private Items _items;

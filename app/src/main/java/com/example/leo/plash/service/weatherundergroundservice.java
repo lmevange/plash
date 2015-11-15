@@ -3,7 +3,7 @@ package com.example.leo.plash.service;
 import android.net.Uri;
 import android.os.AsyncTask;
 
-import com.example.leo.plash.Data.CurrentObservation;
+import com.example.leo.plash.Data.Channel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,7 +40,7 @@ public class Weatherundergroundservice {
         new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... strings) {
-                String q = String.format("select location\"@s\"",strings[0]);
+                String q = String.format(" where text=\"@s\"",strings[0]);
                 String endPoint = String.format("http://api.wunderground.com/api/3cf16a40152a4b1f/conditions/forecast/q/@s.json", Uri.encode(q));
 
                try{
@@ -78,15 +78,15 @@ public class Weatherundergroundservice {
                     JSONObject jo = new JSONObject(s);
                     JSONObject queryResults = jo.optJSONObject("query");
                    String type = queryResults.getString("type");
-                    if(type == "querynotfound"){
+                    if(type == "error"  ){
                         _cl.serviceFailure(new LocationWeatherException("No cities match your search query:"+location));
                         return;
 
                     }
 
-                    CurrentObservation currentObservation = new CurrentObservation();
-                    currentObservation.JSONpopulate(queryResults.optJSONObject("features").optJSONObject("currentObservation"));
-                    _cl.serviceSuccess(currentObservation);
+                    Channel channel = new Channel();
+                    channel.JSONpopulate(queryResults.optJSONObject("results").optJSONObject("currentObservation"));
+                    _cl.serviceSuccess(channel);
                 } catch (JSONException e) {
                     _cl.serviceFailure(e);
                 }
