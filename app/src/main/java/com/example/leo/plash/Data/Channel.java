@@ -5,26 +5,28 @@ import org.json.JSONObject;
 /**
  * Created by Joseph on 11/12/15.
  */
-public class Channel implements JSONpopulate {
 
-    private Units _units;
-    private Items _items;
 
-    public Units get_units() {
-        return _units;
+public class Channel implements JSONPopulator {
+    private Units units;
+    private Item item;
+
+    public Units getUnits() {
+        return units;
     }
 
-    public Items get_items() {
-        return _items;
+    public Item getItem() {
+        return item;
     }
 
     @Override
-    public void JSONpopulate(JSONObject Data) {
-        _units = new Units();
-        _units.JSONpopulate(Data.optJSONObject("Units"));
+    public void populate(JSONObject data) {
 
-        _items = new Items();
-        _items.JSONpopulate(Data.optJSONObject("Items"));
+        units = new Units();
+        units.populate(data.optJSONObject("units"));
+
+        item = new Item();
+        item.populate(data.optJSONObject("item"));
 
     }
 }

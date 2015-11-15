@@ -1,189 +1,71 @@
 package com.example.leo.plash;
 
 import android.app.ProgressDialog;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Intent;
-import android.widget.Button;
 
-<<<<<<< HEAD
 import com.example.leo.plash.Data.Channel;
-=======
-import java.io.IOException;
-import java.util.Date;
-import java.io.File;
-import com.example.leo.plash.Data.CurrentObservation;
->>>>>>> origin/master
-import com.example.leo.plash.Data.Items;
+import com.example.leo.plash.Data.Item;
 import com.example.leo.plash.service.WeatherServiceCallback;
-import com.example.leo.plash.service.Weatherundergroundservice;
-import android.app.Activity;
-
-import java.text.SimpleDateFormat;
+import com.example.leo.plash.service.YahooWeatherService;
 
 
-public class WeatherActivity extends Activity implements WeatherServiceCallback {
+public class WeatherActivity extends ActionBarActivity implements WeatherServiceCallback {
 
-    private ImageView _weatherIcon;
-    private TextView _tvTemp;
-    private TextView _tvCond;
-    private TextView _tvLoca;
+    private ImageView weatherIconImageView;
+    private TextView temperatureTextView;
+    private TextView conditionTextView;
+    private TextView locationTextView;
 
-    private Weatherundergroundservice _service;
-
-    private ProgressDialog _pd;
-
-  //  private static final int ACTIVITY_START_CAMERA_APP = 0;
-  //  private ImageView mPhotoCapturedImageView;
-  //  private String mImageFileLocation = "";
+    private YahooWeatherService service;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
-        _weatherIcon = (ImageView) findViewById(R.id.weatherIconImageView);
-        _tvTemp = (TextView) findViewById(R.id.temperatureTextView);
-        _tvCond = (TextView) findViewById(R.id.conditionTextView);
-        _tvLoca = (TextView) findViewById(R.id.locationTextView);
 
-        _service = new Weatherundergroundservice(this);
+        weatherIconImageView = (ImageView) findViewById(R.id.weatherIconImageView);
+        temperatureTextView = (TextView) findViewById(R.id.temperatureTextView);
+        conditionTextView = (TextView) findViewById(R.id.conditionTextView);
+        locationTextView = (TextView) findViewById(R.id.locationTextView);
 
-        _pd = new ProgressDialog(this);
-        _pd.setMessage("Loading...");
-        _pd.show();
+        service = new YahooWeatherService(this);
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Loading...");
+        dialog.show();
 
-<<<<<<< HEAD
-        _service.refreash("NY/Buffalo");
-        btnTakePhoto = (Button) findViewById(R.id.weatherButton);
-        weatherImage = (ImageView) findViewById(R.id.weatherImage);
-=======
-        _service.refreash("Buffalo,NY");
->>>>>>> origin/master
-
-       // mPhotoCapturedImageView = (ImageView) findViewById(R.id.weatherImage);
-
-        }
-
-
-        @Override
-        public boolean onCreateOptionsMenu(Menu menu) {
-            // Inflate the menu; this adds items to the action bar if it is present.
-            getMenuInflater().inflate(R.menu.menu_weather, menu);
-            return true;
-        }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            // Handle action bar item clicks here. The action bar will
-            // automatically handle clicks on the Home/Up button, so long
-            // as you specify a parent activity in AndroidManifest.xml.
-            int id = item.getItemId();
-
-            //noinspection SimplifiableIfStatement
-            if (id == R.id.action_settings) {
-                return true;
-            }
-
-            return super.onOptionsItemSelected(item);
-        }
-
-
-        @Override
-        public void serviceSuccess(Channel channel) {
-            _pd.hide();
-            Items items = channel.get_items();
-            int resource = getResources().getIdentifier("drawable/icon_" + items.get_con().get_it(), null, getPackageName());
-
-            Drawable weatherIcon = getResources().getDrawable(resource);
-
-            _weatherIcon.setImageDrawable(weatherIcon);
-            _tvTemp.setText(items.get_con().get_temp()+"\u00b0"+channel.get_units().get_temp());
-            _tvCond.setText(items.get_con().get_descrip());
-            _tvLoca.setText(_service.getLocation());
-
-
-        }
-
-        @Override
-        public void serviceFailure(Exception e) {
-            _pd.hide();
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-        }
-<<<<<<< HEAD
-      }
-=======
-/*
-        public void takePhoto(View view){
-            Intent callCameraApplicationIntent = new Intent();
-            callCameraApplicationIntent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-
-            File photoFile = null;
-            try{
-                photoFile = createImageFileSave();
-
-            } catch (IOException e){
-                e.printStackTrace();
-            }
-            callCameraApplicationIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
-
-            startActivityForResult(callCameraApplicationIntent, ACTIVITY_START_CAMERA_APP);
-
-
-        }
-
-        protected  void onActivityResult (int requestCode, int resultCode,Intent data){
-            if(requestCode == ACTIVITY_START_CAMERA_APP && resultCode == RESULT_OK){
-                //Bundle extras = data.getExtras();
-                //Bitmap photoCapturedBitmap = (Bitmap) extras.get("data");
-                //mPhotoCapturedImageView.setImageBitmap(photoCapturedBitmap);
-               // Bitmap photoCapturedBitmap = BitmapFactory.decodeFile(mImageFileLocation);
-               // mPhotoCapturedImageView.setImageBitmap(photoCapturedBitmap);
-                setReducedImageSize();
-
-            }
-
-        }
-
-    File createImageFileSave() throws IOException{
-
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "IMAGE_" + timeStamp + "_";
-        File storageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-
-        File image = File.createTempFile(imageFileName, ".jpg", storageDirectory);
-        mImageFileLocation = image.getAbsolutePath();
-
-        return image;
+        service.refreshWeather("Buffalo,NY");
     }
 
-    void setReducedImageSize(){
-        int targetImageViewWidth = mPhotoCapturedImageView.getWidth();
-        int targetImageViewHeight = mPhotoCapturedImageView.getHeight();
+    @Override
+    public void serviceSuccess(Channel channel) {
+        dialog.hide();
 
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(mImageFileLocation, bmOptions);
-        int cameraImageWidth = bmOptions.outWidth;
-        int cameraImageHeight = bmOptions.outHeight;
+        Item item = channel.getItem();
 
-        int scaleFactor = Math.min(cameraImageWidth/targetImageViewWidth, cameraImageHeight/targetImageViewHeight);
-        bmOptions.inSampleSize = scaleFactor;
-        bmOptions.inJustDecodeBounds = false;
+        int resourceId = getResources().getIdentifier("drawable/icon_" + item.getCondition().getCode(), null, getPackageName());
 
-        Bitmap photoReducedSizeBitmap = BitmapFactory.decodeFile(mImageFileLocation, bmOptions);
-        mPhotoCapturedImageView.setImageBitmap(photoReducedSizeBitmap);
+        @SuppressWarnings("deprecation")
+        Drawable weatherIconDrawble = getResources().getDrawable(resourceId);
+
+        weatherIconImageView.setImageDrawable(weatherIconDrawble);
+
+        temperatureTextView.setText(item.getCondition().getTemperature() + "\u00B0" + channel.getUnits().getTemperature());
+        conditionTextView.setText(item.getCondition().getDescription());
+        locationTextView.setText(service.getLocation());
     }
 
-*/
+    @Override
+    public void serviceFailure(Exception exception) {
+        dialog.hide();
+        Toast.makeText(this, exception.getMessage(), Toast.LENGTH_LONG).show();
     }
->>>>>>> origin/master
+}
+
+
 

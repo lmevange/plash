@@ -6,17 +6,15 @@ import org.json.JSONObject;
 /**
  * Created by Joseph on 11/12/15.
  */
-public class Units implements JSONpopulate {
+public class Units implements JSONPopulator {
+    private String temperature;
 
-    private String _temp;
-
-    public String get_temp() {
-        return _temp;
+    public String getTemperature() {
+        return temperature;
     }
 
     @Override
-    public void JSONpopulate(JSONObject Data) {
-
-        _temp = Data.optString("Temprature");
+    public void populate(JSONObject data) {
+        temperature = data.optString("temperature");
     }
 }
